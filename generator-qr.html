@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generator Kode QR — Gratis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root{
+    --ink:#14182B;
+    --ink-soft:#20243B;
+    --paper:#EDE8DD;
+    --paper-dim:#E2DCCC;
+    --stamp:#B23A2E;
+    --stamp-dark:#8F2C22;
+    --sand:#8D8571;
+    --teal:#3E6259;
+    --cream:#F5F1E8;
+    --line: rgba(20,24,43,0.14);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--ink);
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(245,241,232,0.06) 1px, transparent 0);
+    background-size: 22px 22px;
+    color:var(--cream);
+    font-family:'IBM Plex Sans', sans-serif;
+    min-height:100vh;
+    padding:32px 18px 60px;
+  }
+  .wrap{max-width:980px;margin:0 auto;}
+
+  header{margin-bottom:28px;}
+  .eyebrow{
+    font-family:'Space Mono',monospace;
+    font-size:13px;
+    color:var(--sand);
+    letter-spacing:0.04em;
+    margin:0 0 10px;
+  }
+  h1{
+    font-family:'Space Mono',monospace;
+    font-weight:700;
+    font-size:clamp(28px,4vw,42px);
+    line-height:1.15;
+    margin:0 0 12px;
+    max-width:14ch;
+    color:var(--cream);
+  }
+  .lede{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    flex-wrap:wrap;
+  }
+  .lede p{
+    font-size:15.5px;
+    color:#C7C2B4;
+    max-width:52ch;
+    line-height:1.55;
+    margin:0;
+  }
+  .badge{
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    font-weight:700;
+    color:var(--cream);
+    background:var(--stamp);
+    border:2px solid var(--cream);
+    border-radius:50%;
+    width:64px;height:64px;
+    flex:0 0 auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    transform:rotate(-8deg);
+    line-height:1.1;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap:22px;
+    margin-top:32px;
+    align-items:start;
+  }
+  @media (max-width: 800px){
+    .grid{grid-template-columns:1fr;}
+  }
+
+  .panel{
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:4px;
+    padding:26px 26px 28px;
+    position:relative;
+  }
+  .panel.controls{
+    border:1.5px dashed rgba(20,24,43,0.35);
+  }
+  .field{margin-bottom:22px;}
+  .field:last-child{margin-bottom:0;}
+  label.field-label{
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink);
+    margin-bottom:8px;
+  }
+  .hint{
+    font-size:12.5px;
+    color:var(--sand);
+    margin-top:6px;
+    line-height:1.4;
+  }
+
+  .tabs{
+    display:inline-flex;
+    background:var(--paper-dim);
+    border-radius:999px;
+    padding:3px;
+    gap:2px;
+  }
+  .tabs button{
+    font-family:'IBM Plex Sans',sans-serif;
+    font-size:13.5px;
+    font-weight:500;
+    padding:8px 16px;
+    border:none;
+    border-radius:999px;
+    background:transparent;
+    color:var(--ink);
+    cursor:pointer;
+    transition:background 0.15s ease, color 0.15s ease;
+  }
+  .tabs button.active{
+    background:var(--ink);
+    color:var(--cream);
+  }
+
+  textarea{
+    width:100%;
+    min-height:120px;
+    resize:vertical;
+    font-family:'IBM Plex Sans',sans-serif;
+    font-size:14.5px;
+    line-height:1.5;
+    padding:12px 14px;
+    border-radius:3px;
+    border:1.5px solid rgba(20,24,43,0.25);
+    background:#FBF9F4;
+    color:var(--ink);
+  }
+  textarea:focus, input:focus, select:focus, button:focus-visible{
+    outline:2px solid var(--teal);
+    outline-offset:1px;
+  }
+  .counter{
+    display:flex;
+    justify-content:space-between;
+    font-size:12px;
+    color:var(--sand);
+    margin-top:6px;
+  }
+
+  .logo-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .upload-btn{
+    font-family:'IBM Plex Sans',sans-serif;
+    font-size:13.5px;
+    font-weight:500;
+    padding:9px 15px;
+    border-radius:3px;
+    border:1.5px solid var(--ink);
+    background:transparent;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .upload-btn:hover{background:var(--ink);color:var(--cream);}
+  input[type="file"]{display:none;}
+  .thumb{
+    width:40px;height:40px;
+    border-radius:50%;
+    overflow:hidden;
+    border:1.5px solid rgba(20,24,43,0.3);
+    display:none;
+    background:#fff;
+  }
+  .thumb img{width:100%;height:100%;object-fit:contain;}
+  .remove-logo{
+    font-size:12.5px;
+    color:var(--stamp);
+    background:none;
+    border:none;
+    cursor:pointer;
+    text-decoration:underline;
+    padding:0;
+    display:none;
+  }
+
+  .row2{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:16px;
+  }
+  .color-input{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    border:1.5px solid rgba(20,24,43,0.25);
+    border-radius:3px;
+    padding:8px 10px;
+    background:#FBF9F4;
+  }
+  .color-input input[type="color"]{
+    width:28px;height:28px;
+    border:none;
+    padding:0;
+    background:none;
+    cursor:pointer;
+  }
+  .color-input span{font-size:13px;}
+
+  select{
+    width:100%;
+    font-family:'IBM Plex Sans',sans-serif;
+    font-size:14px;
+    padding:9px 10px;
+    border-radius:3px;
+    border:1.5px solid rgba(20,24,43,0.25);
+    background:#FBF9F4;
+    color:var(--ink);
+  }
+
+  /* Preview panel */
+  .panel.preview{
+    background:var(--ink-soft);
+    color:var(--cream);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+    position:sticky;
+    top:24px;
+  }
+  .frame{
+    position:relative;
+    width:100%;
+    max-width:300px;
+    aspect-ratio:1/1;
+    margin:6px auto 20px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#fff;
+    border-radius:2px;
+  }
+  .frame .corner{
+    position:absolute;
+    width:22px;height:22px;
+    border-color:var(--teal);
+    border-style:solid;
+    border-width:0;
+  }
+  .frame .corner.tl{top:-8px;left:-8px;border-top-width:3px;border-left-width:3px;}
+  .frame .corner.tr{top:-8px;right:-8px;border-top-width:3px;border-right-width:3px;}
+  .frame .corner.bl{bottom:-8px;left:-8px;border-bottom-width:3px;border-left-width:3px;}
+  .frame .corner.br{bottom:-8px;right:-8px;border-bottom-width:3px;border-right-width:3px;}
+
+  #qrCanvas{
+    width:88%;
+    height:88%;
+    object-fit:contain;
+  }
+  .scan-sweep{
+    position:absolute;
+    left:0; right:0; top:0;
+    height:3px;
+    background:linear-gradient(90deg, transparent, var(--teal), transparent);
+    opacity:0;
+  }
+  .scan-sweep.run{
+    animation: sweep 0.7s ease-out;
+  }
+  @keyframes sweep{
+    0%{ top:2%; opacity:1; }
+    90%{ opacity:1; }
+    100%{ top:96%; opacity:0; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .scan-sweep.run{ animation:none; opacity:0; }
+  }
+
+  .empty-msg{
+    font-size:13.5px;
+    color:#B7C1BC;
+    max-width:22ch;
+  }
+  .error-msg{
+    font-size:13px;
+    color:#F2B8AE;
+    max-width:26ch;
+    display:none;
+  }
+
+  .download-btn{
+    font-family:'Space Mono',monospace;
+    font-weight:700;
+    font-size:14px;
+    padding:12px 26px;
+    border-radius:3px;
+    border:none;
+    background:var(--stamp);
+    color:var(--cream);
+    cursor:pointer;
+    letter-spacing:0.02em;
+  }
+  .download-btn:hover{background:var(--stamp-dark);}
+  .download-btn:disabled{
+    background:#4a4e5f;
+    color:#8b8f9c;
+    cursor:not-allowed;
+  }
+  .preview-note{
+    font-size:12px;
+    color:#9BA0AE;
+    margin-top:14px;
+  }
+
+  footer{
+    margin-top:36px;
+    font-size:12.5px;
+    color:#7B8072;
+    text-align:center;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <p class="eyebrow">Alat gratis, jalan langsung di peramban kamu</p>
+    <div class="lede">
+      <div>
+        <h1>Bikin kode QR sendiri, lengkap dengan logo</h1>
+        <p>Tempel tautan atau teks panjang, tambahkan logo di tengah kalau mau, lalu unduh sebagai PNG. Tidak ada data yang dikirim ke server mana pun — semua diproses di perangkatmu.</p>
+      </div>
+      <div class="badge">100%<br>gratis</div>
+    </div>
+  </header>
+
+  <div class="grid">
+
+    <!-- CONTROLS -->
+    <section class="panel controls">
+
+      <div class="field">
+        <label class="field-label">Jenis isi</label>
+        <div class="tabs" role="tablist">
+          <button type="button" id="tabLink" class="active" role="tab" aria-selected="true">Tautan</button>
+          <button type="button" id="tabText" role="tab" aria-selected="false">Teks panjang</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" id="inputLabel" for="dataInput">Alamat tautan</label>
+        <textarea id="dataInput" placeholder="https://contoh.go.id/layanan"></textarea>
+        <div class="counter">
+          <span id="capacityHint">Cocok untuk tautan pendek sampai panjang</span>
+          <span id="charCount">0 karakter</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Logo di tengah (opsional)</label>
+        <div class="logo-row">
+          <button type="button" class="upload-btn" id="uploadBtn">Unggah logo</button>
+          <input type="file" id="logoInput" accept="image/*">
+          <div class="thumb" id="thumb"><img id="thumbImg" alt="Pratinjau logo"></div>
+          <button type="button" class="remove-logo" id="removeLogo">Hapus logo</button>
+        </div>
+        <p class="hint">Format PNG dengan latar transparan paling rapi. Saat ada logo, kode QR otomatis dibuat lebih tahan gangguan supaya tetap bisa dipindai.</p>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Warna</label>
+        <div class="row2">
+          <div class="color-input">
+            <input type="color" id="colorDark" value="#14182B">
+            <span>Warna kode</span>
+          </div>
+          <div class="color-input">
+            <input type="color" id="colorLight" value="#ffffff">
+            <span>Warna latar</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label" for="sizeSelect">Ukuran unduhan</label>
+        <select id="sizeSelect">
+          <option value="512" selected>512 × 512 px — cukup untuk layar & cetak kecil</option>
+          <option value="1024">1024 × 1024 px — untuk cetak poster/banner</option>
+          <option value="256">256 × 256 px — ukuran ringkas</option>
+        </select>
+      </div>
+
+    </section>
+
+    <!-- PREVIEW -->
+    <section class="panel preview">
+      <div class="frame" id="frame">
+        <span class="corner tl"></span>
+        <span class="corner tr"></span>
+        <span class="corner bl"></span>
+        <span class="corner br"></span>
+        <div class="scan-sweep" id="sweep"></div>
+        <canvas id="qrCanvas" width="512" height="512"></canvas>
+        <p class="empty-msg" id="emptyMsg">Ketik tautan atau teks di sebelah kiri, kode QR-nya akan muncul di sini.</p>
+        <p class="error-msg" id="errorMsg">Teksnya kepanjangan untuk dibuatkan kode QR. Coba persingkat isinya.</p>
+      </div>
+      <button class="download-btn" id="downloadBtn" disabled>Unduh PNG</button>
+      <p class="preview-note">Diperbarui otomatis saat kamu mengetik</p>
+    </section>
+
+  </div>
+
+  <footer>Dibuat untuk dipakai berkali-kali, tanpa batas, tanpa akun.</footer>
+</div>
+
+<div id="qrHidden" style="display:none;"></div>
+
+<script>
+(function(){
+  const dataInput = document.getElementById('dataInput');
+  const tabLink = document.getElementById('tabLink');
+  const tabText = document.getElementById('tabText');
+  const inputLabel = document.getElementById('inputLabel');
+  const capacityHint = document.getElementById('capacityHint');
+  const charCount = document.getElementById('charCount');
+
+  const uploadBtn = document.getElementById('uploadBtn');
+  const logoInput = document.getElementById('logoInput');
+  const thumb = document.getElementById('thumb');
+  const thumbImg = document.getElementById('thumbImg');
+  const removeLogo = document.getElementById('removeLogo');
+
+  const colorDark = document.getElementById('colorDark');
+  const colorLight = document.getElementById('colorLight');
+  const sizeSelect = document.getElementById('sizeSelect');
+
+  const canvas = document.getElementById('qrCanvas');
+  const ctx = canvas.getContext('2d');
+  const emptyMsg = document.getElementById('emptyMsg');
+  const errorMsg = document.getElementById('errorMsg');
+  const sweep = document.getElementById('sweep');
+  const downloadBtn = document.getElementById('downloadBtn');
+  const qrHidden = document.getElementById('qrHidden');
+
+  let mode = 'link';
+  let logoImage = null;
+  let debounceTimer = null;
+
+  tabLink.addEventListener('click', () => setMode('link'));
+  tabText.addEventListener('click', () => setMode('text'));
+
+  function setMode(m){
+    mode = m;
+    tabLink.classList.toggle('active', m === 'link');
+    tabText.classList.toggle('active', m === 'text');
+    tabLink.setAttribute('aria-selected', m === 'link');
+    tabText.setAttribute('aria-selected', m === 'text');
+    if(m === 'link'){
+      inputLabel.textContent = 'Alamat tautan';
+      inputLabel.setAttribute('for','dataInput');
+      dataInput.placeholder = 'https://contoh.go.id/layanan';
+      capacityHint.textContent = 'Cocok untuk tautan pendek sampai panjang';
+    } else {
+      inputLabel.textContent = 'Teks';
+      dataInput.placeholder = 'Tulis atau tempel teksnya di sini — bisa cukup panjang, misalnya isi pengumuman atau catatan.';
+      capacityHint.textContent = 'Teks sangat panjang akan otomatis pakai kode QR yang lebih rapat';
+    }
+    scheduleUpdate();
+  }
+
+  dataInput.addEventListener('input', () => {
+    charCount.textContent = dataInput.value.length + ' karakter';
+    scheduleUpdate();
+  });
+  colorDark.addEventListener('input', scheduleUpdate);
+  colorLight.addEventListener('input', scheduleUpdate);
+  sizeSelect.addEventListener('change', scheduleUpdate);
+
+  uploadBtn.addEventListener('click', () => logoInput.click());
+  logoInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev){
+      const img = new Image();
+      img.onload = function(){
+        logoImage = img;
+        thumbImg.src = ev.target.result;
+        thumb.style.display = 'block';
+        removeLogo.style.display = 'inline';
+        scheduleUpdate();
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+  removeLogo.addEventListener('click', () => {
+    logoImage = null;
+    logoInput.value = '';
+    thumb.style.display = 'none';
+    removeLogo.style.display = 'none';
+    scheduleUpdate();
+  });
+
+  function scheduleUpdate(){
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(render, 250);
+  }
+
+  function normalizedData(){
+    const raw = dataInput.value.trim();
+    if(!raw) return '';
+    if(mode === 'link'){
+      if(!/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(raw)){
+        return 'https://' + raw;
+      }
+    }
+    return raw;
+  }
+
+  function render(){
+    const text = normalizedData();
+    errorMsg.style.display = 'none';
+
+    if(!text){
+      canvas.style.display = 'none';
+      emptyMsg.style.display = 'block';
+      downloadBtn.disabled = true;
+      return;
+    }
+
+    const size = parseInt(sizeSelect.value, 10);
+    const dark = colorDark.value;
+    const light = colorLight.value;
+    const preferHigh = !!logoImage;
+
+    qrHidden.innerHTML = '';
+
+    const levels = preferHigh
+      ? [QRCode.CorrectLevel.H, QRCode.CorrectLevel.Q, QRCode.CorrectLevel.M, QRCode.CorrectLevel.L]
+      : [QRCode.CorrectLevel.Q, QRCode.CorrectLevel.M, QRCode.CorrectLevel.L];
+
+    let built = false;
+    for(const level of levels){
+      try{
+        qrHidden.innerHTML = '';
+        new QRCode(qrHidden, {
+          text: text,
+          width: size,
+          height: size,
+          colorDark: dark,
+          colorLight: light,
+          correctLevel: level
+        });
+        built = true;
+        break;
+      }catch(e){
+        continue;
+      }
+    }
+
+    if(!built){
+      canvas.style.display = 'none';
+      emptyMsg.style.display = 'none';
+      errorMsg.style.display = 'block';
+      downloadBtn.disabled = true;
+      return;
+    }
+
+    const srcCanvas = qrHidden.querySelector('canvas');
+    if(!srcCanvas){
+      canvas.style.display = 'none';
+      errorMsg.style.display = 'block';
+      downloadBtn.disabled = true;
+      return;
+    }
+
+    canvas.width = size;
+    canvas.height = size;
+    ctx.clearRect(0,0,size,size);
+    ctx.drawImage(srcCanvas, 0, 0, size, size);
+
+    if(logoImage){
+      const logoBoxRatio = 0.24;
+      const boxSize = size * logoBoxRatio;
+      const cx = size/2, cy = size/2;
+      const pad = boxSize * 0.12;
+
+      ctx.save();
+      ctx.beginPath();
+      const r = (boxSize/2) + pad*0.6;
+      ctx.arc(cx, cy, r, 0, Math.PI*2);
+      ctx.fillStyle = light || '#ffffff';
+      ctx.fill();
+      ctx.restore();
+
+      const iw = logoImage.width, ih = logoImage.height;
+      const scale = Math.min(boxSize/iw, boxSize/ih);
+      const dw = iw*scale, dh = ih*scale;
+      ctx.drawImage(logoImage, cx - dw/2, cy - dh/2, dw, dh);
+    }
+
+    canvas.style.display = 'block';
+    emptyMsg.style.display = 'none';
+    downloadBtn.disabled = false;
+
+    sweep.classList.remove('run');
+    void sweep.offsetWidth;
+    sweep.classList.add('run');
+  }
+
+  downloadBtn.addEventListener('click', () => {
+    const link = document.createElement('a');
+    link.download = 'kode-qr.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+
+  canvas.style.display = 'none';
+})();
+</script>
+</body>
+</html>
