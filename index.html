@@ -222,7 +222,7 @@ footer{margin-top:36px;font-size:12.5px;color:#7B8072;text-align:center}
   const removeMark=(s,m)=>s.split(m).join('');
   const addMark=(s,m)=>Array.from(removeMark(s,m)).reduce((o,c)=>{
     const comb=/[\u0300-\u036F]/.test(c);
-    return o+c+((!comb&&!/\s/.test(c))?m:'');
+     return o+c+((!comb&&c!=='\n'&&c!=='\r')?m:'');
   },'');
   const hasLetters=s=>/\S/.test(s);
 
