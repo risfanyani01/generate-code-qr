@@ -25,6 +25,7 @@ h1{font-family:'Space Mono',monospace;font-weight:700;font-size:clamp(28px,4vw,4
 .panel.controls{border:1.5px dashed rgba(20,24,43,.35)}
 .field{margin-bottom:22px}
 .field:last-child{margin-bottom:0}
+.field[hidden]{display:none}
 label.field-label{display:block;font-size:13px;font-weight:600;margin-bottom:8px}
 .hint{font-size:12.5px;color:var(--sand);margin-top:6px;line-height:1.4}
 .tabs{display:inline-flex;background:var(--paper-dim);border-radius:999px;padding:3px;gap:2px}
@@ -45,10 +46,6 @@ input[type=file]{display:none}
 .thumb{width:40px;height:40px;border-radius:50%;overflow:hidden;border:1.5px solid rgba(20,24,43,.3);display:none;background:#fff}
 .thumb img{width:100%;height:100%;object-fit:contain}
 .remove-logo{font-size:12.5px;color:var(--stamp);background:none;border:none;cursor:pointer;text-decoration:underline;padding:0;display:none}
-.row2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.color-input{display:flex;align-items:center;gap:10px;border:1.5px solid rgba(20,24,43,.25);border-radius:3px;padding:8px 10px;background:#FBF9F4}
-.color-input input[type=color]{width:28px;height:28px;border:none;padding:0;background:none;cursor:pointer}
-.color-input span{font-size:13px}
 select{width:100%;font-family:inherit;font-size:14px;padding:9px 10px;border-radius:3px;border:1.5px solid rgba(20,24,43,.25);background:#FBF9F4;color:var(--ink)}
 .panel.preview{background:var(--ink-soft);color:var(--cream);display:flex;flex-direction:column;align-items:center;text-align:center;position:sticky;top:24px}
 .frame{position:relative;width:100%;max-width:300px;aspect-ratio:1/1;margin:6px auto 20px;display:flex;align-items:center;justify-content:center;background:#fff;border-radius:2px}
@@ -100,8 +97,6 @@ footer{margin-top:36px;font-size:12.5px;color:#7B8072;text-align:center}
           <button type="button" data-fmt="bold" title="Tebal (Ctrl+B)"><b>B</b></button>
           <button type="button" data-fmt="italic" title="Miring (Ctrl+I)"><i>I</i></button>
           <button type="button" data-fmt="bolditalic" title="Tebal & miring"><b><i>BI</i></b></button>
-          <!-- <button type="button" data-fmt="underline" title="Garis bawah (Ctrl+U)"><u>U</u></button> -->
-          <!-- <button type="button" data-fmt="strike" title="Coret"><s>S</s></button> -->
           <button type="button" data-fmt="mono" title="Monospasi" style="font-family:'Space Mono',monospace">M</button>
           <button type="button" data-fmt="clear" class="clear" title="Hapus semua format pada teks terpilih">Hapus format</button>
         </div>
@@ -121,47 +116,44 @@ footer{margin-top:36px;font-size:12.5px;color:#7B8072;text-align:center}
           <div class="thumb" id="thumb"><img id="thumbImg" alt="Pratinjau logo"></div>
           <button type="button" class="remove-logo" id="removeLogo">Hapus logo</button>
         </div>
-        <p class="hint">Logo ditempel langsung di atas kode tanpa latar (transparan), sebaiknya gunakan format PNG transparan. Kode QR otomatis dibuat, tetapi tetap uji pindai sebelum dicetak.</p>
+        <p class="hint">Logo ditempel langsung di atas kode tanpa latar (transparan), sebaiknya gunakan format PNG transparan. Tetap uji pindai sebelum dicetak.</p>
       </div>
 
-      <div class="field">
+      <!-- Disembunyikan dari tampilan; nilai default tetap dipakai -->
+      <div class="field" hidden>
         <label class="field-label">Warna</label>
-        <div class="row2">
-          <div class="color-input"><input type="color" id="colorDark" value="#000000"><span>Warna kode</span></div>
-          <div class="color-input"><input type="color" id="colorLight" value="#ffffff"><span>Warna latar</span></div>
-        </div>
+        <input type="color" id="colorDark" value="#000000">
+        <input type="color" id="colorLight" value="#ffffff">
       </div>
 
-      <div class="field">
+      <div class="field" hidden>
         <label class="field-label" for="sizeSelect">Ukuran unduhan</label>
         <select id="sizeSelect">
-            <option value="512">512 × 512 px — cukup untuk layar & cetak kecil</option>
-            <option value="1024" selected>1024 × 1024 px — untuk cetak poster/banner</option>
-            <option value="2048">2048 × 2048 px — teks sangat panjang / cetak besar</option>
-            <option value="256">256 × 256 px — ukuran ringkas</option>
+          <option value="512">512</option>
+          <option value="1024" selected>1024</option>
+          <option value="2048">2048</option>
+          <option value="256">256</option>
         </select>
       </div>
 
-      <!-- <div class="field">
+      <div class="field" hidden>
         <label class="field-label" for="marginSelect">Margin di sekeliling kode</label>
         <select id="marginSelect">
           <option value="0">Tanpa margin</option>
           <option value="0.06" selected>Standar — aman untuk dipindai</option>
           <option value="0.12">Lebar — cocok ditempel/dicetak berdekatan dengan elemen lain</option>
         </select>
-        <p class="hint"></p>
-      </div> -->
+      </div>
 
-      <div class="field">
+      <div class="field" hidden>
         <label class="field-label" for="eclSelect">Kerapatan kode</label>
         <select id="eclSelect">
           <option value="auto">Otomatis</option>
           <option value="L" selected>Paling renggang</option>
           <option value="M">Renggang</option>
-          <option value="Q">Seimbang (tahan gangguan)</option>
-          <option value="H">Paling tahan (lebih rapat)</option>
-          </select>
-          <p class="hint"></p>
+          <option value="Q">Seimbang</option>
+          <option value="H">Paling tahan</option>
+        </select>
       </div>
     </section>
 
@@ -194,12 +186,11 @@ footer{margin-top:36px;font-size:12.5px;color:#7B8072;text-align:center}
 
   let mode='link',logoImage=null,timer=null;
 
-  // Encode ke UTF-8 sungguhan (termasuk karakter Unicode di luar BMP)
   const enc=new TextEncoder();
   qrcode.stringToBytes=s=>Array.from(enc.encode(s));
 
   /* ---------- Format teks (Unicode) ---------- */
-  const FONTS={ // awal huruf besar, huruf kecil, angka
+  const FONTS={
     bold:[0x1D400,0x1D41A,0x1D7CE],
     italic:[0x1D434,0x1D44E,null],
     bolditalic:[0x1D468,0x1D482,null],
@@ -222,7 +213,7 @@ footer{margin-top:36px;font-size:12.5px;color:#7B8072;text-align:center}
   const removeMark=(s,m)=>s.split(m).join('');
   const addMark=(s,m)=>Array.from(removeMark(s,m)).reduce((o,c)=>{
     const comb=/[\u0300-\u036F]/.test(c);
-     return o+c+((!comb&&c!=='\n'&&c!=='\r')?m:'');
+    return o+c+((!comb&&c!=='\n'&&c!=='\r')?m:'');
   },'');
   const hasLetters=s=>/\S/.test(s);
 
@@ -232,14 +223,13 @@ footer{margin-top:36px;font-size:12.5px;color:#7B8072;text-align:center}
       const m=fmt==='underline'?UL:ST;
       return addMark(sel,m)===sel?removeMark(sel,m):addMark(sel,m);
     }
-    // Font: jika sudah bergaya sama, kembalikan ke biasa
     return applyFont(sel,fmt)===sel?unFont(sel):applyFont(sel,fmt);
   }
 
   function applyFormat(fmt){
     let a=dataInput.selectionStart,b=dataInput.selectionEnd;
     const v=dataInput.value;
-    if(fmt==='underline'){ // garis bawah per kata: perluas seleksi ke batas kata
+    if(fmt==='underline'){
       while(a>0&&!/\s/.test(v[a-1]))a--;
       while(b<v.length&&!/\s/.test(v[b]))b++;
     }
@@ -256,7 +246,7 @@ footer{margin-top:36px;font-size:12.5px;color:#7B8072;text-align:center}
     onInput();
   }
 
-  toolbar.addEventListener('mousedown',e=>e.preventDefault()); // jaga seleksi teks
+  toolbar.addEventListener('mousedown',e=>e.preventDefault());
   toolbar.addEventListener('click',e=>{
     const btn=e.target.closest('button[data-fmt]');
     if(btn)applyFormat(btn.dataset.fmt);
@@ -296,8 +286,7 @@ footer{margin-top:36px;font-size:12.5px;color:#7B8072;text-align:center}
     scheduleUpdate();
   }
   dataInput.addEventListener('input',onInput);
-  [colorDark,colorLight].forEach(el=>el.addEventListener('input',scheduleUpdate));
-  [sizeSelect,marginSelect,eclSelect].forEach(el=>el.addEventListener('change',scheduleUpdate));
+  marginSelect.addEventListener('change',scheduleUpdate);
 
   uploadBtn.addEventListener('click',()=>logoInput.click());
   logoInput.addEventListener('change',e=>{
@@ -353,13 +342,10 @@ footer{margin-top:36px;font-size:12.5px;color:#7B8072;text-align:center}
 
     const n=qr.getModuleCount();
     const m0=size*parseFloat(marginSelect.value);
-    const cell=Math.max(1,Math.floor((size-m0*2)/n)); // kotak berukuran piksel bulat = tajam di semua ukuran
+    const cell=Math.max(1,Math.floor((size-m0*2)/n));
     const inner=cell*n;
     const marginPx=Math.floor((size-inner)/2);
-    const nm={L:'rendah',M:'sedang',Q:'tinggi',H:'tertinggi'};
-    qrInfo.textContent=n+'×'+n+' kotak · daya tahan '+nm[used]+' · ±'+cell.toFixed(1)+' px/kotak'
-      +(cell<3?' — terlalu rapat, perbesar ukuran unduhan atau persingkat teks':'')
-      +(logoImage&&(used==='L'||used==='M')?' — dengan logo, kode kurang aman dipindai':'');
+    qrInfo.textContent=cell<3?'Kode terlalu rapat — persingkat teks agar mudah dipindai.':'';
 
     canvas.width=size;canvas.height=size;
     ctx.fillStyle=light;ctx.fillRect(0,0,size,size);
@@ -374,7 +360,6 @@ footer{margin-top:36px;font-size:12.5px;color:#7B8072;text-align:center}
       }
     }
 
-    // Logo langsung di atas kode, tanpa latar (transparan)
     if(logoImage){
       const box=inner*0.24;
       const iw=logoImage.width,ih=logoImage.height;
@@ -389,12 +374,12 @@ footer{margin-top:36px;font-size:12.5px;color:#7B8072;text-align:center}
 
   downloadBtn.addEventListener('click',async()=>{
     const blob=await new Promise(res=>canvas.toBlob(res,'image/png'));
-    if(!blob){qrInfo.textContent='Gagal membuat file PNG. Coba ukuran yang lebih kecil.';return;}
+    if(!blob){qrInfo.textContent='Gagal membuat file PNG. Coba lagi.';return;}
     let dl=null;
     try{dl=window.claude?await claude.use('downloads'):null;}catch(e){}
     if(dl){
       try{await dl.save({filename:'kode-qr.png',data:blob});}
-      catch(e){if(!e||e.code!=='declined')qrInfo.textContent='Unduhan gagal ('+((e&&e.code)||'error')+'). Coba ukuran yang lebih kecil.';}
+      catch(e){if(!e||e.code!=='declined')qrInfo.textContent='Unduhan gagal ('+((e&&e.code)||'error')+'). Coba lagi.';}
       return;
     }
     const a=document.createElement('a');
